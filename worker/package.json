@@ -1,0 +1,17 @@
+{
+  "name": "css-to-js-sourcemap-worker",
+  "version": "1.0.0",
+  "main": "worker.js",
+  "files": [
+    "worker.js"
+  ],
+  "scripts": {
+    "prepare": "webpack-cli"
+  },
+  "devDependencies": {
+    "css-to-js-sourcemap-core": "*",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4"
+  },
+  "license": "MIT"
+}

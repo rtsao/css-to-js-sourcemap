@@ -1,0 +1,19 @@
+{
+  "name": "css-to-js-sourcemap-tests",
+  "version": "0.0.0-workspace",
+  "private": true,
+  "scripts": {
+    "test": "node worker.js"
+  },
+  "dependencies": {
+    "abab": "^2.0.0",
+    "css-to-js-sourcemap-fixture-app": "0.0.0-workspace",
+    "css-to-js-sourcemap-worker": "*",
+    "get-port": "^3.2.0",
+    "is-ci": "^1.1.0",
+    "puppeteer": "^1.4.0",
+    "source-map": "^0.7.3",
+    "source-map-url": "^0.4.0",
+    "tape": "^4.9.0"
+  }
+}

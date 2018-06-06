@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "8"
+sudo: false
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.7.0
+  - export PATH=$HOME/.yarn/bin:$PATH
+before_script:
+  - yarn workspace css-to-js-sourcemap-worker run prepare
+  - yarn workspace css-to-js-sourcemap-fixture-app run prepare
+script:
+  - yarn run lint
+  - yarn run test
+cache:
+  yarn: true

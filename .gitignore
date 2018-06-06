@@ -1,0 +1,4 @@
+node_modules/
+worker/worker.js
+fixtures/app/static
+yarn-error.log

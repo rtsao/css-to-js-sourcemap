@@ -1,0 +1,17 @@
+{
+  "name": "css-to-js-sourcemap-fixture-app",
+  "version": "0.0.0-workspace",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "prepare": "webpack"
+  },
+  "dependencies": {
+    "sirv": "^0.1.2",
+    "css-to-js-sourcemap-worker": "*"
+  },
+  "devDependencies": {
+    "webpack": ">= 4",
+    "webpack-cli": "*"
+  }
+}
