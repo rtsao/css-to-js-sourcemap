@@ -10,7 +10,6 @@ module.exports = {
     path: path.resolve(__dirname),
     filename: "worker.js",
   },
-  devtool: "inline-source-map",
   plugins: [
     // Ensure a monolithic bundle, despite dynamic import usage
     new webpack.optimize.LimitChunkCountPlugin({
@@ -23,4 +22,5 @@ module.exports = {
     // therefore provide an empty stub
     fs: "empty",
   },
+  mode: "production",
 };

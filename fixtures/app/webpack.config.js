@@ -11,6 +11,7 @@ const noMap = {
     filename: "no-map.js",
   },
   devtool: false,
+  mode: "production",
 };
 
 const inlineMap = {
@@ -20,6 +21,7 @@ const inlineMap = {
     filename: "inline-map.js",
   },
   devtool: "inline-source-map",
+  mode: "production",
 };
 
 const externalMap = {
@@ -29,6 +31,7 @@ const externalMap = {
     filename: "external-map.js",
   },
   devtool: "source-map",
+  mode: "production",
 };
 
 module.exports = [noMap, inlineMap, externalMap];
