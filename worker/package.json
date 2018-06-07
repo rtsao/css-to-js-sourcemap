@@ -3,13 +3,15 @@
   "version": "1.0.1",
   "main": "worker.js",
   "files": [
-    "worker.js"
+    "worker.js",
+    "mappings.wasm"
   ],
   "scripts": {
-    "prepare": "webpack-cli"
+    "prepare": "webpack-cli && node scripts/copy-wasm.js"
   },
   "devDependencies": {
     "css-to-js-sourcemap-core": "*",
+    "resolve-from": "^4.0.0",
     "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4"
   },

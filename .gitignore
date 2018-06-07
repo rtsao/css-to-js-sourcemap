@@ -1,4 +1,5 @@
 node_modules/
 worker/worker.js
+worker/mappings.wasm
 fixtures/app/static
 yarn-error.log
