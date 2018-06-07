@@ -29,7 +29,7 @@ type ErrorLikeObject = {
 ## Sample usage
 
 ```js
-const worker = new Worker("https://unpkg.com/css-to-js-sourcemap-worker@1.0.0/worker.js");
+const worker = new Worker("https://unpkg.com/css-to-js-sourcemap-worker/worker.js");
 
 worker.onmessage = msg => {
   if (msg.id === "render_css" && msg.css) {
@@ -43,7 +43,7 @@ const {stack, stacktrace, message} = new Error("create stack trace");
 
 worker.postMessage({
   id: "init_wasm",
-  url: "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm",
+  url: "https://unpkg.com/css-to-js-sourcemap-worker/mappings.wasm",
 });
 worker.postMessage({
   id: "add_mapped_class",
