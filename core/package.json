@@ -1,6 +1,6 @@
 {
   "name": "css-to-js-sourcemap-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "error-stack-parser": "^2.0.1",
     "source-map": "^0.7.3",
