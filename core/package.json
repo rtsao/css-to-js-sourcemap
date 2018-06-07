@@ -2,10 +2,10 @@
   "name": "css-to-js-sourcemap-core",
   "version": "1.0.1",
   "dependencies": {
-    "error-stack-parser": "^2.0.1",
-    "source-map": "^0.7.3",
-    "source-map-url": "^0.4.0",
-    "sourcemap-codec": "^1.4.1"
+    "error-stack-parser": "2.0.1",
+    "source-map": "0.7.3",
+    "source-map-url": "0.4.0",
+    "sourcemap-codec": "1.4.1"
   },
   "license": "MIT"
 }
