@@ -7,13 +7,13 @@ type MessageToWorker =
   | {id: "init_wasm", url: string}
   | {
       id: "add_mapped_class",
-      error: ErrorLikeObject,
       className: string,
+      stackInfo: ErrorLikeObject,
       stackIndex: number
     }
   | {id: "set_render_interval", interval: number}
   | {id: "clear_render_interval"}
-  | {id: "schedule_render"}
+  | {id: "render"}
   | {id: "invalidate"};
 
 type MessageFromWorker =
@@ -47,8 +47,8 @@ worker.postMessage({
 });
 worker.postMessage({
   id: "add_mapped_class",
-  error: {stack, stacktrace, message},
   className: "__debug-1",
+  stackInfo: {stack, stacktrace, message},
   stackIndex: 0,
 });
 worker.postMessage({

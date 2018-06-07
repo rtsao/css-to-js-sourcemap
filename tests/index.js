@@ -57,7 +57,7 @@ test(`single mapped class works on /no-map`, async t => {
     });
     window.worker.postMessage({
       id: "add_mapped_class",
-      error: window.error1,
+      stackInfo: window.error1,
       className: "__debug-1",
       stackIndex: 0,
     });
@@ -101,7 +101,7 @@ test(`replaying requests after invalidation`, async t => {
     });
     window.worker.postMessage({
       id: "add_mapped_class",
-      error: window.error1,
+      stackInfo: window.error1,
       className: "__debug-1",
       stackIndex: 0,
     });
@@ -151,7 +151,7 @@ function testSingleMap(route) {
       });
       window.worker.postMessage({
         id: "add_mapped_class",
-        error: window.error1,
+        stackInfo: window.error1,
         className: "__debug-1",
         stackIndex: 0,
       });

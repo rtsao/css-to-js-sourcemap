@@ -71,8 +71,8 @@ export function renderCSS() {
   return `${rules.join("\n")}\n${comment}`;
 }
 
-export function addMappedClass({error, stackIndex, className}) {
-  addMappedClassAsync({error, stackIndex, className});
+export function addMappedClass({className, stackInfo, stackIndex}) {
+  addMappedClassAsync({className, stackInfo, stackIndex});
 }
 
 export function invalidate() {
@@ -97,8 +97,8 @@ export function invalidate() {
 
 function addMappedClassAsync(request) {
   state.inboundRequests.add(request);
-  const {error, stackIndex, className} = request;
-  const location = getLocation(error, stackIndex);
+  const {className, stackInfo, stackIndex} = request;
+  const location = getLocation(stackInfo, stackIndex);
   return getMapper(location.filename)
     .then(
       task(mapper => {
@@ -168,8 +168,8 @@ function getMapperFromUrl(url) {
   );
 }
 
-function getLocation(error, stackIndex) {
-  const frame = ErrorStackParser.parse(error)[stackIndex];
+function getLocation(stackInfo, stackIndex) {
+  const frame = ErrorStackParser.parse(stackInfo)[stackIndex];
   if (!frame.fileName) {
     throw new Error("Could not locate file");
   }

@@ -12,8 +12,8 @@ const actions = {
   },
 
   add_mapped_class: msg => {
-    const {error, className, stackIndex} = msg.data;
-    core.addMappedClass({error, className, stackIndex});
+    const {className, stackInfo, stackIndex} = msg.data;
+    core.addMappedClass({className, stackInfo, stackIndex});
   },
 
   set_render_interval: msg => {
@@ -21,7 +21,7 @@ const actions = {
     if (renderInterval) {
       clearInterval(renderInterval);
     }
-    renderInterval = setInterval(postRenderedCSS, interval);
+    renderInterval = setInterval(render, interval);
   },
 
   clear_render_interval: () => {
@@ -31,7 +31,7 @@ const actions = {
     renderInterval = void 0;
   },
 
-  schedule_render: postRenderedCSS,
+  render: render,
 
   invalidate: () => {
     const css = core.invalidate();
@@ -53,7 +53,7 @@ function handleMessage(msg) {
   action(msg);
 }
 
-function postRenderedCSS() {
+function render() {
   const css = core.renderCSS();
   self.postMessage({
     id: "render_css",
