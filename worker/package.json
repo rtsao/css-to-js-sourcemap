@@ -11,9 +11,9 @@
   },
   "devDependencies": {
     "css-to-js-sourcemap-core": "*",
-    "resolve-from": "^4.0.0",
-    "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4"
+    "resolve-from": "4.0.0",
+    "webpack": "4.11.1",
+    "webpack-cli": "3.0.3"
   },
   "license": "MIT"
 }

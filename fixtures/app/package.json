@@ -7,11 +7,11 @@
     "prepare": "webpack"
   },
   "dependencies": {
-    "sirv": "^0.1.2",
+    "sirv": "0.1.2",
     "css-to-js-sourcemap-worker": "*"
   },
   "devDependencies": {
-    "webpack": ">= 4",
+    "webpack": "4.11.1",
     "webpack-cli": "*"
   }
 }
