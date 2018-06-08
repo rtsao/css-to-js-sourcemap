@@ -115,7 +115,7 @@ function addMappedClassAsync(request) {
           line: mapped.line,
           column: mapped.column,
         });
-        state.inboundRequests.remove(request);
+        state.inboundRequests.delete(request);
       }),
     )
     .catch(err => {

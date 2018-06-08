@@ -27,29 +27,35 @@ testSingleMap("/external-map");
 testSingleMap("/inline-map");
 
 test(`single mapped class works on /no-map`, async t => {
-  const {page, browser, server} = await setup("/no-map", async msg => {
-    if (msg.css) {
-      const lines = msg.css.split("\n");
-      t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
-      const consumer = await getConsumer(msg.css);
-      const pos = consumer.originalPositionFor({line: 1, column: 0});
-      t.equal(pos.line, 1, "mapped line number matches expected");
-      t.equal(pos.column, 0, "mapped column matches expected");
-      const {hostname, pathname, protocol} = new URL(pos.source);
-      t.equal(hostname, "localhost");
-      t.equal(pathname, "/no-map.js");
-      t.equal(protocol, "http:");
-      const content = consumer.sourceContentFor(pos.source);
-      t.equal(
-        content,
-        fixtures.clientNoMapRaw,
-        "mapped source content matches expected",
-      );
-      await browser.close();
-      server.close();
-      t.end();
-    }
-  });
+  const {page, browser, server} = await setup(
+    "/no-map",
+    async msg => {
+      if (msg.css) {
+        const lines = msg.css.split("\n");
+        t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
+        const consumer = await getConsumer(msg.css);
+        const pos = consumer.originalPositionFor({line: 1, column: 0});
+        t.equal(pos.line, 1, "mapped line number matches expected");
+        t.equal(pos.column, 0, "mapped column matches expected");
+        const {hostname, pathname, protocol} = new URL(pos.source);
+        t.equal(hostname, "localhost");
+        t.equal(pathname, "/no-map.js");
+        t.equal(protocol, "http:");
+        const content = consumer.sourceContentFor(pos.source);
+        t.equal(
+          content,
+          fixtures.clientNoMapRaw,
+          "mapped source content matches expected",
+        );
+        await browser.close();
+        server.close();
+        t.end();
+      }
+    },
+    () => {
+      t.fail("recieved error");
+    },
+  );
   page.evaluate(() => {
     window.worker.postMessage({
       id: "init_wasm",
@@ -69,30 +75,36 @@ test(`single mapped class works on /no-map`, async t => {
 });
 
 test(`replaying requests after invalidation`, async t => {
-  const {page, browser, server} = await setup("/external-map", async msg => {
-    if (msg.css) {
-      const lines = msg.css.split("\n");
-      t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
-      const consumer = await getConsumer(msg.css);
-      const pos = consumer.originalPositionFor({line: 1, column: 0});
-      t.equal(pos.line, 5, "mapped line number matches expected");
-      t.equal(pos.column, 0, "mapped column matches expected");
-      t.equal(
-        pos.source,
-        "webpack:///client.js",
-        "mapped source matches expected",
-      );
-      const content = consumer.sourceContentFor("webpack:///client.js");
-      t.equal(
-        content,
-        fixtures.clientSource,
-        "mapped source content matches expected",
-      );
-      await browser.close();
-      server.close();
-      t.end();
-    }
-  });
+  const {page, browser, server} = await setup(
+    "/external-map",
+    async msg => {
+      if (msg.css) {
+        const lines = msg.css.split("\n");
+        t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
+        const consumer = await getConsumer(msg.css);
+        const pos = consumer.originalPositionFor({line: 1, column: 0});
+        t.equal(pos.line, 5, "mapped line number matches expected");
+        t.equal(pos.column, 0, "mapped column matches expected");
+        t.equal(
+          pos.source,
+          "webpack:///client.js",
+          "mapped source matches expected",
+        );
+        const content = consumer.sourceContentFor("webpack:///client.js");
+        t.equal(
+          content,
+          fixtures.clientSource,
+          "mapped source content matches expected",
+        );
+        await browser.close();
+        server.close();
+        t.end();
+      }
+    },
+    () => {
+      t.fail("recieved error");
+    },
+  );
   server.blockAllRequests();
   page.evaluate(() => {
     window.worker.postMessage({
@@ -172,7 +184,7 @@ function startServer() {
   });
 }
 
-async function setup(route, msgHandler) {
+async function setup(route, msgHandler, errHandler) {
   const {port, server} = await startServer();
   const browser = await puppeteer.launch(
     isCI ? {args: ["--no-sandbox", "--disable-dev-shm-usage"]} : {},
@@ -184,6 +196,8 @@ async function setup(route, msgHandler) {
     Promise.all(msg.args().map(a => a.jsonValue())).then(async args => {
       if (args[0] === "__on_message__") {
         msgHandler(args[1]);
+      } else if (args[0] === "Debug worker error") {
+        errHandler(args[1]);
       }
     });
   });
