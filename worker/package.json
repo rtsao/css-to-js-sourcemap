@@ -7,7 +7,7 @@
     "mappings.wasm"
   ],
   "scripts": {
-    "prepare": "webpack-cli && node scripts/copy-wasm.js"
+    "prepare": "node scripts/copy-wasm.js && webpack"
   },
   "devDependencies": {
     "css-to-js-sourcemap-core": "*",
