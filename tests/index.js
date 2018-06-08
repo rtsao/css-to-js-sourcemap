@@ -53,7 +53,7 @@ test(`single mapped class works on /no-map`, async t => {
   page.evaluate(() => {
     window.worker.postMessage({
       id: "init_wasm",
-      url: "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm",
+      url: "/mappings.wasm",
     });
     window.worker.postMessage({
       id: "add_mapped_class",
@@ -97,7 +97,7 @@ test(`replaying requests after invalidation`, async t => {
   page.evaluate(() => {
     window.worker.postMessage({
       id: "init_wasm",
-      url: "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm",
+      url: "/mappings.wasm",
     });
     window.worker.postMessage({
       id: "add_mapped_class",
@@ -147,7 +147,7 @@ function testSingleMap(route) {
     page.evaluate(() => {
       window.worker.postMessage({
         id: "init_wasm",
-        url: "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm",
+        url: "/mappings.wasm",
       });
       window.worker.postMessage({
         id: "add_mapped_class",

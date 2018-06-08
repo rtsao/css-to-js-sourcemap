@@ -5,9 +5,11 @@ const path = require("path");
 const sirv = require("sirv");
 
 const workerPath = require.resolve("css-to-js-sourcemap-worker");
+const wasmPath = path.join(path.dirname(workerPath), "mappings.wasm");
 
 const assets = sirv(path.join(__dirname, "static"));
 const worker = sirv(path.dirname(workerPath));
+const wasm = sirv(path.dirname(wasmPath));
 
 const routes = {
   "/no-map": "/no-map.js",
@@ -25,6 +27,9 @@ function createServer() {
         res.setHeader("Content-Type", "text/html");
         res.statusCode = 200;
         return void res.end(template(script));
+      }
+      if (req.url === "/mappings.wasm") {
+        return wasm(req, res);
       }
       if (req.url === "/worker.js") {
         return worker(req, res);
