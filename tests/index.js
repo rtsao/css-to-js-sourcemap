@@ -18,7 +18,7 @@ const fixtures = {
     "utf-8",
   ),
   clientNoMapRaw: fs.readFileSync(
-    require.resolve("css-to-js-sourcemap-fixture-app/static/no-map.js"),
+    require.resolve("css-to-js-sourcemap-fixture-app/public/_static/no-map.js"),
     "utf-8",
   ),
 };
@@ -39,7 +39,7 @@ test(`single mapped class works on /no-map`, async t => {
         t.equal(pos.column, 0, "mapped column matches expected");
         const {hostname, pathname, protocol} = new URL(pos.source);
         t.equal(hostname, "localhost");
-        t.equal(pathname, "/no-map.js");
+        t.equal(pathname, "/_static/no-map.js");
         t.equal(protocol, "http:");
         const content = consumer.sourceContentFor(pos.source);
         t.equal(
@@ -132,30 +132,36 @@ test(`replaying requests after invalidation`, async t => {
 
 function testSingleMap(route) {
   test(`single mapped class works on ${route}`, async t => {
-    const {page, browser, server} = await setup(route, async msg => {
-      if (msg.css) {
-        const lines = msg.css.split("\n");
-        t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
-        const consumer = await getConsumer(msg.css);
-        const pos = consumer.originalPositionFor({line: 1, column: 0});
-        t.equal(pos.line, 5, "mapped line number matches expected");
-        t.equal(pos.column, 0, "mapped column matches expected");
-        t.equal(
-          pos.source,
-          "webpack:///client.js?n=0",
-          "mapped source matches expected",
-        );
-        const content = consumer.sourceContentFor("webpack:///client.js?n=0");
-        t.equal(
-          content,
-          fixtures.clientSource,
-          "mapped source content matches expected",
-        );
-        await browser.close();
-        server.close();
-        t.end();
-      }
-    });
+    const {page, browser, server} = await setup(
+      route,
+      async msg => {
+        if (msg.css) {
+          const lines = msg.css.split("\n");
+          t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
+          const consumer = await getConsumer(msg.css);
+          const pos = consumer.originalPositionFor({line: 1, column: 0});
+          t.equal(pos.line, 5, "mapped line number matches expected");
+          t.equal(pos.column, 0, "mapped column matches expected");
+          t.equal(
+            pos.source,
+            "webpack:///client.js?n=0",
+            "mapped source matches expected",
+          );
+          const content = consumer.sourceContentFor("webpack:///client.js?n=0");
+          t.equal(
+            content,
+            fixtures.clientSource,
+            "mapped source content matches expected",
+          );
+          await browser.close();
+          server.close();
+          t.end();
+        }
+      },
+      () => {
+        t.fail("Recieved error");
+      },
+    );
     page.evaluate(() => {
       window.worker.postMessage({
         id: "init_wasm",

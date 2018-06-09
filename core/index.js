@@ -154,7 +154,9 @@ async function getMapper(filename) {
     .then(
       task(src => {
         const url = SourceMapUrl.getFrom(src);
-        return url ? getMapperFromUrl(url) : getIdentityMapper(filename, src);
+        return url
+          ? getMapperFromUrl(url, filename)
+          : getIdentityMapper(filename, src);
       }),
     );
 
@@ -162,8 +164,8 @@ async function getMapper(filename) {
   return result;
 }
 
-function getMapperFromUrl(url) {
-  return getSourceMapJsonFromUrl(url).then(
+function getMapperFromUrl(url, filename) {
+  return getSourceMapJsonFromUrl(url, filename).then(
     task(map => {
       return new SourceMapConsumer(map);
     }),
@@ -182,14 +184,16 @@ function getLocation(stackInfo, stackIndex) {
   };
 }
 
-async function getSourceMapJsonFromUrl(url) {
-  return isDataUrl(url)
-    ? parseDataUrl(url)
-    : fetch(url).then(
-        task(res => {
-          return res.json();
-        }),
-      );
+async function getSourceMapJsonFromUrl(url, filename) {
+  if (isDataUrl(url)) {
+    return parseDataUrl(url);
+  }
+  const fullUrl = new URL(url, filename).href;
+  return fetch(fullUrl).then(
+    task(res => {
+      return res.json();
+    }),
+  );
 }
 
 function isDataUrl(url) {

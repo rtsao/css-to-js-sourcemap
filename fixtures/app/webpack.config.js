@@ -2,7 +2,7 @@
 
 const path = require("path");
 
-const outputDir = path.resolve(__dirname, "static");
+const outputDir = path.resolve(__dirname, "public/_static");
 
 const noMap = {
   entry: "./client.js",

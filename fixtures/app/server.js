@@ -7,14 +7,14 @@ const sirv = require("sirv");
 const workerPath = require.resolve("css-to-js-sourcemap-worker");
 const wasmPath = path.join(path.dirname(workerPath), "mappings.wasm");
 
-const assets = sirv(path.join(__dirname, "static"));
+const assets = sirv(path.join(__dirname, "public"));
 const worker = sirv(path.dirname(workerPath));
 const wasm = sirv(path.dirname(wasmPath));
 
 const routes = {
-  "/no-map": "/no-map.js",
-  "/inline-map": "/inline-map.js",
-  "/external-map": "/external-map.js",
+  "/no-map": "/_static/no-map.js",
+  "/inline-map": "/_static/inline-map.js",
+  "/external-map": "/_static/external-map.js",
 };
 
 function createServer() {
