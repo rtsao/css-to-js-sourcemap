@@ -14,24 +14,24 @@ class Token {
   }
 }
 
-let invalidationToken = new Token();
-
-function task(fn) {
-  const token = invalidationToken;
-  return result => {
-    if (!token.cancelled) {
-      return fn(result);
-    }
-  };
-}
-
 const state = {
+  sourceNonce: 0,
+  invalidationToken: new Token(),
   mapperCache: new Map(),
   sourceCache: new Map(),
   inboundRequests: new Set(),
   // List of mapped class names for batch rendering
   renderQueue: [],
 };
+
+function task(fn) {
+  const token = state.invalidationToken;
+  return result => {
+    if (!token.cancelled) {
+      return fn(result);
+    }
+  };
+}
 
 export function initWasm(url) {
   SourceMapConsumer.initialize({
@@ -60,7 +60,8 @@ export function renderCSS() {
 
   const map = {
     version: 3,
-    sources,
+    // Source URLs need to be unique for source maps to reload
+    sources: sources.map(source => `${source}?n=${state.sourceNonce}`),
     mappings,
     sourcesContent: sources.map(source => state.sourceCache.get(source)),
   };
@@ -77,8 +78,8 @@ export function addMappedClass({className, stackInfo, stackIndex}) {
 
 export function invalidate() {
   // Token should be immediately invalidated
-  invalidationToken.cancel();
-  invalidationToken = new Token();
+  state.invalidationToken.cancel();
+  state.invalidationToken = new Token();
 
   // After invalidation, existing mapped class names should be rendered
   // using the existing sourceCache
@@ -86,6 +87,7 @@ export function invalidate() {
 
   state.mapperCache = new Map();
   state.sourceCache = new Map();
+  state.sourceNonce++;
 
   // Replay inbound requests with cleared caches
   for (const request of state.inboundRequests) {

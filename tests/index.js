@@ -87,10 +87,10 @@ test(`replaying requests after invalidation`, async t => {
         t.equal(pos.column, 0, "mapped column matches expected");
         t.equal(
           pos.source,
-          "webpack:///client.js",
+          "webpack:///client.js?n=1",
           "mapped source matches expected",
         );
-        const content = consumer.sourceContentFor("webpack:///client.js");
+        const content = consumer.sourceContentFor("webpack:///client.js?n=1");
         t.equal(
           content,
           fixtures.clientSource,
@@ -142,10 +142,10 @@ function testSingleMap(route) {
         t.equal(pos.column, 0, "mapped column matches expected");
         t.equal(
           pos.source,
-          "webpack:///client.js",
+          "webpack:///client.js?n=0",
           "mapped source matches expected",
         );
-        const content = consumer.sourceContentFor("webpack:///client.js");
+        const content = consumer.sourceContentFor("webpack:///client.js?n=0");
         t.equal(
           content,
           fixtures.clientSource,
