@@ -32,9 +32,10 @@ type ErrorLikeObject = {
 const worker = new Worker("https://unpkg.com/css-to-js-sourcemap-worker/worker.js");
 
 worker.onmessage = msg => {
-  if (msg.id === "render_css" && msg.css) {
+  const {id, css} = msg.data;
+  if (id === "render_css" && css) {
     const style = document.createElement("style");
-    style.appendChild(document.createTextNode(msg.css));
+    style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
   }
 };
