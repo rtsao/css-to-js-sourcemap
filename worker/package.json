@@ -1,6 +1,6 @@
 {
   "name": "css-to-js-sourcemap-worker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "worker.js",
   "files": [
     "worker.js",
