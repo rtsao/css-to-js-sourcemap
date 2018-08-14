@@ -1,5 +1,9 @@
 # css-to-js-sourcemap-worker
 
+The purpose of this package is to generate CSS with arbitrary classes that have sourcemaps to arbitrary lines in JS (at runtime). This may be useful for CSS-in-JS abstractions.
+
+Because parsing and generating sourcemaps is expensive, this package provides a web worker implementation so it can be performed off the main thread.
+
 ## Worker protocol
 
 ```js
