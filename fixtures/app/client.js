@@ -14,3 +14,6 @@ function toErrorLikeObject(err) {
   const {stack, stacktrace, message} = err;
   return {stack, stacktrace, message};
 }
+
+// A unicode character: 🤪 to ensure the base64 encoding can handle unicode
+// See: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_Unicode_Problem
