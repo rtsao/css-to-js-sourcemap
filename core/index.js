@@ -65,8 +65,7 @@ export function renderCSS() {
     mappings,
     sourcesContent: sources.map(source => state.sourceCache.get(source)),
   };
-  const json = JSON.stringify(map);
-  const base64 = btoa(json);
+  const base64 = encodeBase64(JSON.stringify(map));
 
   const comment = `/*# sourceMappingURL=data:application/json;charset=utf-8;base64,${base64} */`;
   return `${rules.join("\n")}\n${comment}`;
@@ -206,9 +205,29 @@ function parseDataUrl(url) {
   if (match) {
     const sourceMapStart = match[0].length;
     const encodedSource = url.substr(sourceMapStart);
-    const source = atob(encodedSource);
+    const source = decodeBase64(encodedSource);
     return JSON.parse(source);
   } else {
     throw new Error("The encoding of the inline sourcemap is not supported");
   }
+}
+
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+
+function encodeBase64(str) {
+  return btoa(String.fromCharCode(...encoder.encode(str)));
+}
+
+function decodeBase64(str) {
+  return decoder.decode(toArrayBuffer(atob(str)));
+}
+
+function toArrayBuffer(str) {
+  const buf = new ArrayBuffer(str.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0; i < str.length; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
 }

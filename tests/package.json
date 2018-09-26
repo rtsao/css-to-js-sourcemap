@@ -6,7 +6,6 @@
     "test": "node worker.js"
   },
   "dependencies": {
-    "abab": "2.0.0",
     "css-to-js-sourcemap-fixture-app": "0.0.0-workspace",
     "css-to-js-sourcemap-worker": "*",
     "get-port": "3.2.0",
