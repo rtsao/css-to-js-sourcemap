@@ -154,7 +154,7 @@ async function getMapper(filename) {
       task(src => {
         const url = SourceMapUrl.getFrom(src);
         return url
-          ? getMapperFromUrl(url, filename)
+          ? getMapperFromUrl(url, filename, src)
           : getIdentityMapper(filename, src);
       }),
     );
@@ -163,11 +163,13 @@ async function getMapper(filename) {
   return result;
 }
 
-function getMapperFromUrl(url, filename) {
+function getMapperFromUrl(url, filename, src) {
   return getSourceMapJsonFromUrl(url, filename).then(
     task(map => {
       return new SourceMapConsumer(map);
     }),
+    // Fallback to identity mapper
+    task(() => getIdentityMapper(filename, src)),
   );
 }
 
@@ -190,7 +192,10 @@ async function getSourceMapJsonFromUrl(url, filename) {
   const fullUrl = new URL(url, filename).href;
   return fetch(fullUrl).then(
     task(res => {
-      return res.json();
+      if (res.status === 200) {
+        return res.json();
+      }
+      return Promise.reject();
     }),
   );
 }
