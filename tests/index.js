@@ -21,6 +21,12 @@ const fixtures = {
     require.resolve("css-to-js-sourcemap-fixture-app/public/_static/no-map.js"),
     "utf-8",
   ),
+  clientExternalMapRaw: fs.readFileSync(
+    require.resolve(
+      "css-to-js-sourcemap-fixture-app/public/_static/external-map.js",
+    ),
+    "utf-8",
+  ),
 };
 
 testSingleMap("/external-map");
@@ -123,6 +129,64 @@ test(`replaying requests after invalidation`, async t => {
   });
   server.unblockAllRequests();
   page.evaluate(() => {
+    window.worker.postMessage({
+      id: "set_render_interval",
+      interval: 60,
+    });
+  });
+});
+
+test(`fallback if sourcemap request is 404`, async t => {
+  const {page, browser, server} = await setup(
+    "/external-map",
+    async msg => {
+      if (msg.css) {
+        const lines = msg.css.split("\n");
+        t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
+        const consumer = await getConsumer(msg.css);
+        const pos = consumer.originalPositionFor({line: 1, column: 0});
+        t.equal(pos.line, 1, "mapped line number matches expected");
+        t.equal(pos.column, 0, "mapped column matches expected");
+        const {hostname, pathname, protocol} = new URL(pos.source);
+        t.equal(hostname, "localhost");
+        t.equal(pathname, "/_static/external-map.js");
+        t.equal(protocol, "http:");
+        const content = consumer.sourceContentFor(pos.source);
+        t.equal(
+          content,
+          fixtures.clientExternalMapRaw,
+          "mapped source content matches expected",
+        );
+        await browser.close();
+        server.close();
+        t.end();
+      }
+    },
+    () => {
+      t.fail("recieved error");
+    },
+  );
+  await page.setRequestInterception(true);
+  page.on("request", req => {
+    if (req._url.endsWith(".js.map")) {
+      req.respond({
+        status: 404,
+      });
+    } else {
+      req.continue();
+    }
+  });
+  await page.evaluate(() => {
+    window.worker.postMessage({
+      id: "init_wasm",
+      url: "/mappings.wasm",
+    });
+    window.worker.postMessage({
+      id: "add_mapped_class",
+      stackInfo: window.error1,
+      className: "__debug-1",
+      stackIndex: 0,
+    });
     window.worker.postMessage({
       id: "set_render_interval",
       interval: 60,
