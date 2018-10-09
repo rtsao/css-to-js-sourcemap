@@ -18,33 +18,21 @@ const routes = {
 };
 
 function createServer() {
-  let blockNetwork = Promise.resolve();
-  let unblock = () => {};
   const server = http.createServer((req, res) => {
-    blockNetwork.then(() => {
-      const script = routes[req.url];
-      if (script) {
-        res.setHeader("Content-Type", "text/html");
-        res.statusCode = 200;
-        return void res.end(template(script));
-      }
-      if (req.url === "/mappings.wasm") {
-        return wasm(req, res);
-      }
-      if (req.url === "/worker.js") {
-        return worker(req, res);
-      }
-      return assets(req, res);
-    });
+    const script = routes[req.url];
+    if (script) {
+      res.setHeader("Content-Type", "text/html");
+      res.statusCode = 200;
+      return void res.end(template(script));
+    }
+    if (req.url === "/mappings.wasm") {
+      return wasm(req, res);
+    }
+    if (req.url === "/worker.js") {
+      return worker(req, res);
+    }
+    return assets(req, res);
   });
-  server.blockAllRequests = () => {
-    blockNetwork = new Promise(resolve => {
-      unblock = resolve;
-    });
-  };
-  server.unblockAllRequests = () => {
-    unblock();
-  };
   return server;
 }
 

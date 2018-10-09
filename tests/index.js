@@ -105,8 +105,32 @@ test(`replaying requests after invalidation`, async t => {
       t.fail("recieved error");
     },
   );
-  server.blockAllRequests();
-  page.evaluate(() => {
+  await page.setRequestInterception(true);
+  let invalidated = false;
+  page.on("request", req => {
+    req.continue();
+    if (req._url.endsWith(".js.map")) {
+      // invalidate after first request
+      if (!invalidated) {
+        page.evaluate(() => {
+          window.worker.postMessage({
+            id: "invalidate",
+          });
+        });
+        invalidated = true;
+      } else {
+        t.pass("sourcemap fetched twice");
+        // end test
+        page.evaluate(() => {
+          window.worker.postMessage({
+            id: "set_render_interval",
+            interval: 60,
+          });
+        });
+      }
+    }
+  });
+  await page.evaluate(() => {
     window.worker.postMessage({
       id: "init_wasm",
       url: "/mappings.wasm",
@@ -116,16 +140,6 @@ test(`replaying requests after invalidation`, async t => {
       stackInfo: window.error1,
       className: "__debug-1",
       stackIndex: 0,
-    });
-    window.worker.postMessage({
-      id: "invalidate",
-    });
-  });
-  server.unblockAllRequests();
-  page.evaluate(() => {
-    window.worker.postMessage({
-      id: "set_render_interval",
-      interval: 60,
     });
   });
 });
