@@ -11,7 +11,7 @@
     "css-to-js-sourcemap-worker": "*"
   },
   "devDependencies": {
-    "webpack": "4.12.0",
+    "webpack": "4.20.2",
     "webpack-cli": "3.0.7"
   }
 }
