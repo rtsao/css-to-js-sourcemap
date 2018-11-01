@@ -221,7 +221,11 @@ const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
 function encodeBase64(str) {
-  return btoa(String.fromCharCode(...encoder.encode(str)));
+  let result = "";
+  for (let char of encoder.encode(str)) {
+    result += String.fromCharCode(char);
+  }
+  return btoa(result);
 }
 
 function decodeBase64(str) {
