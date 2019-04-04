@@ -152,7 +152,12 @@ async function getMapper(filename) {
     )
     .then(
       task(src => {
-        const url = SourceMapUrl.getFrom(src);
+        const regex = new RegExp(SourceMapUrl.regex.source, "g");
+        let url;
+        let match;
+        while ((match = regex.exec(src))) {
+          url = match ? match[1] || match[2] || "" : null;
+        }
         return url
           ? getMapperFromUrl(url, filename, src)
           : getIdentityMapper(filename, src);

@@ -5,7 +5,8 @@
     "core",
     "worker",
     "tests",
-    "fixtures/app"
+    "fixtures/app",
+    "fixtures/subdep"
   ],
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",

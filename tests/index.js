@@ -41,7 +41,13 @@ test(`single mapped class works on /no-map`, async t => {
         t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
         const consumer = await getConsumer(msg.css);
         const pos = consumer.originalPositionFor({line: 1, column: 0});
-        t.equal(pos.line, 1, "mapped line number matches expected");
+
+        const lineNumber =
+          fixtures.clientNoMapRaw
+            .split("\n")
+            .indexOf(`const err1 = new Error("Line 5");`) + 1;
+
+        t.equal(pos.line, lineNumber, "mapped line number matches expected");
         t.equal(pos.column, 0, "mapped column matches expected");
         const {hostname, pathname, protocol} = new URL(pos.source);
         t.equal(hostname, "localhost");
@@ -89,7 +95,7 @@ test(`replaying requests after invalidation`, async t => {
         t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
         const consumer = await getConsumer(msg.css);
         const pos = consumer.originalPositionFor({line: 1, column: 0});
-        t.equal(pos.line, 5, "mapped line number matches expected");
+        t.equal(pos.line, 7, "mapped line number matches expected");
         t.equal(pos.column, 0, "mapped column matches expected");
         t.equal(
           pos.source,
@@ -159,7 +165,13 @@ test(`fallback if sourcemap request is 404`, async t => {
         t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
         const consumer = await getConsumer(msg.css);
         const pos = consumer.originalPositionFor({line: 1, column: 0});
-        t.equal(pos.line, 1, "mapped line number matches expected");
+
+        const lineNumber =
+          fixtures.clientExternalMapRaw
+            .split("\n")
+            .indexOf(`const err1 = new Error("Line 5");`) + 1;
+
+        t.equal(pos.line, lineNumber, "mapped line number matches expected");
         t.equal(pos.column, 0, "mapped column matches expected");
         const {hostname, pathname, protocol} = new URL(pos.source);
         t.equal(hostname, "localhost");
@@ -218,7 +230,7 @@ function testSingleMap(route) {
           t.equal(lines[0], ".__debug-1 {}", "has expected class on line 1");
           const consumer = await getConsumer(msg.css);
           const pos = consumer.originalPositionFor({line: 1, column: 0});
-          t.equal(pos.line, 5, "mapped line number matches expected");
+          t.equal(pos.line, 7, "mapped line number matches expected");
           t.equal(pos.column, 0, "mapped column matches expected");
           t.equal(
             pos.source,
