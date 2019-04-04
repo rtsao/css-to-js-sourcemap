@@ -1,0 +1,13 @@
+{
+  "name": "subdep",
+  "version": "0.0.0-workspace",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "prepare": "webpack --mode=production --devtool=source-map"
+  },
+  "devDependencies": {
+    "webpack": "4.20.2",
+    "webpack-cli": "3.2.1"
+  }
+}
