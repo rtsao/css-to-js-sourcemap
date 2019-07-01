@@ -13,7 +13,7 @@
     "test": "node tests/index.js"
   },
   "dependencies": {
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.0.2",
     "eslint": "5.13.0",
     "eslint-plugin-prettier": "3.0.1",
     "prettier": "1.16.3"
