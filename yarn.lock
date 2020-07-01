@@ -1419,10 +1419,6 @@ globals@^11.7.0:
   version "11.8.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.8.0.tgz#c1ef45ee9bed6badf0663c5cb90e8d1adec1321d"
 
-globalyzer@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/globalyzer/-/globalyzer-0.1.0.tgz#cb76da79555669a1519d5a8edf093afaa0bf1465"
-
 globby@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-5.0.0.tgz#ebd84667ca0dbb330b99bcfc68eac2bc54370e0d"
@@ -1433,10 +1429,6 @@ globby@^5.0.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
-
-globrex@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/globrex/-/globrex-0.1.1.tgz#cfe565cfa910707d0ef98eb0b9d78c3c055ca2ef"
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   version "4.1.11"
@@ -2796,13 +2788,13 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sirv@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/sirv/-/sirv-0.2.2.tgz#334d86074c73008fda60129b2487ae94db1fbc7b"
+sirv@0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/sirv/-/sirv-0.4.6.tgz#185e44eb93d24009dd183b7494285c5180b81f22"
+  integrity sha512-rYpOXlNbpHiY4nVXxuDf4mXPvKz1reZGap/LkWp9TvcZ84qD/nPBjjH/6GZsgIjVMbOslnY8YYULAyP8jMn1GQ==
   dependencies:
     "@polka/url" "^0.5.0"
     mime "^2.3.1"
-    tiny-glob "^0.2.0"
 
 slice-ansi@1.0.0:
   version "1.0.0"
@@ -3056,13 +3048,6 @@ timers-browserify@^2.0.4:
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.10.tgz#1d28e3d2aadf1d5a5996c4e9f95601cd053480ae"
   dependencies:
     setimmediate "^1.0.4"
-
-tiny-glob@^0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/tiny-glob/-/tiny-glob-0.2.1.tgz#64347c97094f10669641d415952ce090cf8af34d"
-  dependencies:
-    globalyzer "^0.1.0"
-    globrex "^0.1.1"
 
 tmp@^0.0.33:
   version "0.0.33"

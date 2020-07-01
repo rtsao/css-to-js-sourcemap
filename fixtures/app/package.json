@@ -7,7 +7,7 @@
     "prepare": "webpack"
   },
   "dependencies": {
-    "sirv": "0.2.2",
+    "sirv": "0.4.6",
     "css-to-js-sourcemap-worker": "*",
     "subdep": "0.0.0-workspace"
   },
