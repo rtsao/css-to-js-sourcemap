@@ -12,7 +12,7 @@
   "devDependencies": {
     "css-to-js-sourcemap-core": "*",
     "resolve-from": "4.0.0",
-    "webpack": "4.20.2",
+    "webpack": "4.46.0",
     "webpack-cli": "3.2.1"
   },
   "license": "MIT"
