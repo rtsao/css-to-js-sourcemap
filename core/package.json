@@ -3,7 +3,7 @@
   "version": "2.0.5",
   "dependencies": {
     "error-stack-parser": "2.0.2",
-    "source-map": "0.7.3",
+    "source-map": "0.7.4",
     "source-map-url": "0.4.0",
     "sourcemap-codec": "1.4.4"
   },
